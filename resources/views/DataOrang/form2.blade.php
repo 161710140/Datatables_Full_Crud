@@ -3,25 +3,24 @@
         <div class="modal-content">
             <form id="form-contact" method="post" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
                 {{ csrf_field() }} {{ method_field('POST') }}
-                <div class="modal-header" style="padding:35px 50px;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <div class="modal-header">
                         <span aria-hidden="true"> &times; </span>
                     </button>
-                    <h3 class="modal-title glyphicon glyphicon-plus"></h3>
+                    <h3 class="modal-title"></h3>
                 </div>
 
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
-                        <label for="Nama" class="col-md-3 control-label">Name</label>
+                        <label for="Nama" class="col-md-3 control-label"><span class="glyphicon glyphicon-user"></span>Name</label>
                         <div class="col-md-6">
-                            <input type="text" id="Nama" name="Nama" class="form-control" autofocus required>
+                            <input type="text" id="Nama" name="Nama" class="form-control" required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                      <label for="Lahir" class="col-md-3 control-label">Tanggal Lahir</label>
+                      <label for="Lahir" class="col-md-3 control-label"><span class="glyphicon glyphicon-calendar"></span>Tanggal Lahir</label>
                       <div class="col-md-6">
                           <input type="date" id="Lahir" name="Lahir" class="form-control" required>
                           <span class="help-block with-errors"></span>

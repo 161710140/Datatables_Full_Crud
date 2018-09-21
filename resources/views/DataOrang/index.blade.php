@@ -32,7 +32,7 @@
 
 </head>
 <style>
-  .modal-header, h4, .close {
+  /*.modal-header, h4, .close {
       background-color: #5cb85c;
       color:white !important;
       text-align: center;
@@ -49,7 +49,7 @@
   }
   .modal-footer {
       background-color: #f9f9f9;
-  }
+  }*/
   </style>
 <body>
 
@@ -117,7 +117,7 @@
           editForm = function (id) {
           save_method = 'edit';
           $('input[name=_method]').val('PATCH');
-          $('#form2')[0].reset();
+          $('#form-contact')[0].reset();
           $.ajax({
             url: "{{ url('table') }}" + '/' + id + "/edit",
             // Method yang digunakan
@@ -125,7 +125,7 @@
              ///Type data yang akan dikembalikan oleh database  
             dataType: "JSON",
             success: function(data) {
-              $('#Mymodal').modal('show');
+              $('#modal-form').modal('show');
               $('.modal-title').text('FormEditData');
               $('#id').val(data.id);
               $('#Nama').val(data.Nama);
@@ -209,7 +209,18 @@
                 }
             });
         });
-         
+          var today = new Date();
+          var dd = today.getDate();
+          var mm = today.getMonth()+1;
+          var yyyy = today.getFullYear();
+          if(dd<10){
+              dd='0'+dd
+            } 
+            if(mm<10){
+              mm='0'+mm
+            } 
+            today = yyyy+'-'+mm+'-'+dd;
+            document.getElementById("Lahir").setAttribute("max", today);
      });
     
 </script>

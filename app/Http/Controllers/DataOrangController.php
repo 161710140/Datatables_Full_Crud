@@ -21,7 +21,7 @@ class DataOrangController extends Controller
 
     public function index()
     {
-        return view('datatables');
+        return view('DataOrang.index');
     }
 
     /**
@@ -42,6 +42,15 @@ class DataOrangController extends Controller
      */
     public function store(Request $request)
     {
+         $this->validate($request,[
+            'Nama' => 'required|unique:data_orangs,Nama',
+            'Lahir' => 'required'
+            ],
+            [
+                'Nama.unique'=>'Nama Sudah Diambil',
+                'Nama.required'=>'Isi Data Terlebih Dahulu'
+            ]
+        );
         // Mengambil Semua Inputan Data Sebagai Array
          $input = $request->all();
 
@@ -75,6 +84,7 @@ class DataOrangController extends Controller
     {
         $Nama = DataOrang::findOrFail($id);
         return $Nama;
+        return view('DataOrang.form-edit');
          
     }
 
