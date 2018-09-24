@@ -17,7 +17,7 @@ Route::get('/', function () {
 Route::get('bs', function () {
     return view('Bs');
 });
-Route::get('api/contacts', 'DataOrangController@apiData')->name('api.Data');
+Route::get('api/Data', 'DataOrangController@apiData')->name('api.Data');
 Route::resource('table', 'DataOrangController');
 Route::resource('contact', 'ContactController');
 Route::get('api/contact', 'ContactController@apiContact')->name('api.contact');

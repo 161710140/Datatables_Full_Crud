@@ -43,8 +43,9 @@ class DataOrangController extends Controller
     public function store(Request $request)
     {
          $this->validate($request,[
-            'Nama' => 'required|unique:data_orangs,Nama',
-            'Lahir' => 'required'
+            'Nama' => 'required',
+            'Lahir' => 'required',
+            'Alamat' => 'required',
             ],
             [
                 'Nama.unique'=>'Nama Sudah Diambil',
@@ -53,7 +54,18 @@ class DataOrangController extends Controller
         );
         // Mengambil Semua Inputan Data Sebagai Array
          $input = $request->all();
+         $input['Photo'] = null;
 
+        if ($request->hasFile('Photo')){
+            $input['Photo'] = '/upload/Photo/'.str_slug($input['Photo'], '-').DIRECTORY_SEPARATOR. 'img'.$request->Photo->getClientOriginalName();
+            // $filename = str_random(6).'_'.$input->getClientOriginalName();
+            $request->Photo->move(public_path('/upload/Photo/'), $input['Photo']);
+             // $file = $request->file('Photo');
+             // $destinationPath = public_path() .DIRECTORY_SEPARATOR. 'img';
+             // $filename = str_random(6).'_'.$file->getClientOriginalName();
+             // $uploadSuccess = $file->move($destinationPath,$filename);
+             // $galleri->Photo = $filename;
+        }
           DataOrang::create($input);
 
         return response()->json([
@@ -99,6 +111,15 @@ class DataOrangController extends Controller
     { 
         $input = $request->all();
         $Nama =DataOrang::findOrFail($id);
+         $input['Photo'] = $contact->Photo;
+
+        if ($request->hasFile('Photo')){
+            if (!$contact->Photo == NULL){
+                unlink(public_path($contact->Photo));
+            }
+            $input['Photo'] = '/upload/Photo/'.'.'.$request->Photo->getClientOriginalExtension();
+            $request->Photo->move(public_path('/upload/Photo/'), $input['Photo']);
+        }
 
         $Nama->update($input);
 
@@ -117,6 +138,9 @@ class DataOrangController extends Controller
     public function destroy($id)
     {
         $Nama = DataOrang::findOrFail($id);
+        if (!$Nama->photo == NULL){
+            unlink(public_path($Nama->photo));
+        }
 
         DataOrang::destroy($id);
 
@@ -130,11 +154,17 @@ class DataOrangController extends Controller
         $Nama = DataOrang::all();
  
         return Datatables::of($Nama)
+         ->addColumn('show_photo', function($Nama){
+                if ($Nama->Photo == NULL){
+                    return 'No Image';
+                }
+                return '<img class="rounded-square" width="50" height="50" src="'. url($Nama->Photo) .'" alt="">';
+            })
             ->addColumn('action', function($Nama){
                 return '<a onclick="editForm('. $Nama->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
                        '<a onclick="deleteData('. $Nama->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })
-            ->rawColumns(['action'])->make(true);
+            ->rawColumns(['action','show_photo'])->make(true);
     }
 
 }

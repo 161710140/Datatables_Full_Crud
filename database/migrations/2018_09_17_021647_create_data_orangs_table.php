@@ -19,6 +19,8 @@ class CreateDataOrangsTable extends Migration
             $table->string('Lahir');
             $table->string('Status');
             $table->string('Gender');
+            $table->text('Alamat');
+            $table->text('Photo');
             $table->timestamps();
         });
     }

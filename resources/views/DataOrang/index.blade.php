@@ -68,6 +68,9 @@
                 <th>Lahir</th>
                 <th>Status</th>
                 <th>Gender</th>
+                <th>Alamat</th>
+                <th>Keterangan</th>
+                <th>Photo</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -93,6 +96,7 @@
     <script src="{{ asset('assets/bootstrap/js/ie10-viewport-bug-workaround.js') }}"></script>
     <script type="text/javascript">
   $(document).ready(function() {
+
     var table = $('#table').DataTable({
                       processing: true,
                       serverSide: true,
@@ -102,6 +106,15 @@
                         {data: 'Lahir', name: 'Lahir'},
                         {data: 'Status', name: 'Status'},
                         {data: 'Gender', name: 'Gender'},
+                        {data: 'Alamat', name: 'Alamat'},
+                        { "data": 0 , //mengambil id field
+                          //mRender ???
+                          "mRender" : function ( value, type, full ) {                    
+                          //full adalah jumlah seluruh array 
+                          //proses penggabungan
+                          return full['Nama']+', '+full['Lahir']+','+full['Status']+','+full['Gender']+','+full['Alamat'];}
+                        },
+                        {data: 'show_photo', name: 'show_photo'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
@@ -132,6 +145,7 @@
               $('#Lahir').val(data.Lahir);
               $('#Status').val(data.Status);
               $('#Gender').val(data.Gender);
+              $('#Alamat').val(data.Alamat);
             },
             error : function() {
                 alert("Tidak Ada Data");
@@ -141,33 +155,49 @@
         deleteData = function (id){
           var csrf_token = $('meta[name="csrf-token"]').attr('content');
           swal({
-              title: 'Apakah Anda Yakin?',
+              title:'Apakah Anda Yakin?',
               text: "Anda Tidak Bisa Mengembalikan Data Yang Hilang!",
               type: 'warning',
               showCancelButton: true,
               cancelButtonColor: '#d33',
               confirmButtonColor: '#3085d6',
-              confirmButtonText: 'Oke,Hapus Saja!'
+              confirmButtonText: 'Oke,Hapus Saja!',
           }).then(function () {
+            swal({
+                title: 'Please Wait..!',
+                text : 'Working on it..',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                allowEnterKey    : false,
+                onOpen: () => {
+                    swal.showLoading()
+                }
+            })
               $.ajax({
                   url : "{{ url('table') }}" + '/' + id,
                   type : "POST",
                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                   success : function(data) {
+                      swal.hideLoading();
                       table.ajax.reload();
                       swal({
                           title: 'Success!',
                           text: data.message,
-                          type: 'success',
-                          timer: '1500'
+                          type: 'success',  
+                          allowOutsideClick: false,
+                          allowEscapeKey   : false,
+                          allowEnterKey    : false,
                       })
                   },
                   error : function () {
                       swal({
+                        showLoaderOnConfirm:true, 
                           title: 'Oops...',
                           text: data.message,
                           type: 'error',
-                          timer: '1500'
+                          allowOutsideClick: false,
+                          allowEscapeKey   : false,
+                          allowEnterKey    : false,
                       })
                   }
               });
@@ -179,7 +209,16 @@
                     var id = $('#id').val();
                     if (save_method == 'add') url = "{{ url('table') }}";
                     else url = "{{ url('table') . '/' }}" + id;
-
+                     swal({
+                    title: 'Please Wait..!',
+                    text : 'Working on it..',
+                    allowOutsideClick: false,
+                    allowEscapeKey   : false,
+                    allowEnterKey    : false,
+                    onOpen: () => {
+                    swal.showLoading()
+                  }
+                })
                     $.ajax({
                         url : url,
                         type : "POST",
@@ -187,21 +226,26 @@
                         contentType: false,
                         processData: false,
                         success : function(data) {
+                          swal.hideLoading();
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
                             swal({
                                 title: 'Success!',
-                                text: data.message,
+                                text : data.message,
+                                allowOutsideClick: false,
+                                allowEscapeKey   : false,
+                                allowEnterKey    : false,
                                 type: 'success',
-                                timer: '1500'
                             })
                         },
                         error : function(data){
                             swal({
                                 title: 'Oops...',
-                                text: data.message,
+                                text : data.message,
+                                allowOutsideClick: false,
+                                allowEscapeKey   : false,
+                                allowEnterKey    : false,
                                 type: 'error',
-                                timer: '1500'
                             })
                         }
                     });
@@ -221,6 +265,6 @@
             } 
             today = yyyy+'-'+mm+'-'+dd;
             document.getElementById("Lahir").setAttribute("max", today);
+
      });
-    
 </script>

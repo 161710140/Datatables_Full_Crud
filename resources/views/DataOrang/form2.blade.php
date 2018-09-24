@@ -4,7 +4,6 @@
             <form id="form-contact" method="post" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
                 {{ csrf_field() }} {{ method_field('POST') }}
                 <div class="modal-header">
-                        <span aria-hidden="true"> &times; </span>
                     </button>
                     <h3 class="modal-title"></h3>
                 </div>
@@ -23,6 +22,13 @@
                       <label for="Lahir" class="col-md-3 control-label"><span class="glyphicon glyphicon-calendar"></span>Tanggal Lahir</label>
                       <div class="col-md-6">
                           <input type="date" id="Lahir" name="Lahir" class="form-control" required>
+                          <span class="help-block with-errors"></span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="Alamat" class="col-md-3 control-label"><span class="glyphicon glyphicon-road"></span> Alamat</label>
+                      <div class="col-md-6">
+                        <textarea id="Alamat" name="Alamat" class="form-control" required></textarea>
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>
@@ -45,6 +51,13 @@
                         </Select>
                     </div>
                 </div>
+                <div class="form-group">
+                      <label for="Photo" class="col-md-3 control-label"><span class="glyphicon glyphicon-camera"></span> Photo</label>
+                      <div class="col-md-6">
+                          <input type="file" id="Photo" name="Photo" class="form-control">
+                          <span class="help-block with-errors"></span>
+                      </div>
+                    </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary btn-save">Submit</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
