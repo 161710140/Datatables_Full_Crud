@@ -48,25 +48,24 @@ class DataOrangController extends Controller
             'Alamat' => 'required',
             ],
             [
-                'Nama.unique'=>'Nama Sudah Diambil',
-                'Nama.required'=>'Isi Data Terlebih Dahulu'
+                'Nama.required'=>'Isi Data Terlebih Dahulu',
             ]
         );
         // Mengambil Semua Inputan Data Sebagai Array
          $input = $request->all();
+         // Memberi Attribute NULL pada Photo
          $input['Photo'] = null;
 
-        if ($request->hasFile('Photo')){
-            $input['Photo'] = '/upload/Photo/'.str_slug($input['Photo'], '-').DIRECTORY_SEPARATOR. 'img'.$request->Photo->getClientOriginalName();
-            // $filename = str_random(6).'_'.$input->getClientOriginalName();
+         if ($request->hasFile('Photo')){
+            $input['Photo'] = '/upload/Photo/'.str_slug($input['Nama'], '-').'.'.$request->Photo->getClientOriginalExtension();
             $request->Photo->move(public_path('/upload/Photo/'), $input['Photo']);
-             // $file = $request->file('Photo');
-             // $destinationPath = public_path() .DIRECTORY_SEPARATOR. 'img';
-             // $filename = str_random(6).'_'.$file->getClientOriginalName();
-             // $uploadSuccess = $file->move($destinationPath,$filename);
-             // $galleri->Photo = $filename;
         }
-          DataOrang::create($input);
+
+        // if ($request->hasFile('Photo')){
+        //     $input['Photo'] = '/upload/Photo/'.str_slug($input['Name'], '-').DIRECTORY_SEPARATOR. 'img'.$request->Photo->getClientOriginalName();
+        //     $request->Photo->move(public_path('/upload/Photo/'), $input['Photo']);
+        // }
+        DataOrang::create($input);
 
         return response()->json([
             'success' => true,
@@ -111,13 +110,13 @@ class DataOrangController extends Controller
     { 
         $input = $request->all();
         $Nama =DataOrang::findOrFail($id);
-         $input['Photo'] = $contact->Photo;
+         $input['Photo'] = $Nama->Photo;
 
         if ($request->hasFile('Photo')){
-            if (!$contact->Photo == NULL){
-                unlink(public_path($contact->Photo));
+            if (!$Nama->Photo == NULL){
+                unlink(public_path($Nama->Photo));
             }
-            $input['Photo'] = '/upload/Photo/'.'.'.$request->Photo->getClientOriginalExtension();
+           $input['Photo'] = '/upload/Photo/'.str_slug($input['Nama'], '-').'.'.$request->Photo->getClientOriginalExtension();
             $request->Photo->move(public_path('/upload/Photo/'), $input['Photo']);
         }
 

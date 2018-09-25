@@ -14,7 +14,7 @@
                         <label for="Nama" class="col-md-3 control-label"><span class="glyphicon glyphicon-user"></span>Name</label>
                         <div class="col-md-6">
                             <input type="text" id="Nama" name="Nama" class="form-control" required>
-                            <span class="help-block with-errors"></span>
+                            <span class="help-block has-error Nama_error"></span>
                         </div>
                     </div>
 
@@ -45,10 +45,8 @@
                  <div class="form-group ">
                         <label for="Gender" class="col-md-3 control-label"><span class="glyphicon glyphicon-user"></span>Gender</label>
                         <div class="col-md-6">
-                        <Select id='Gender' name="Gender" class="form-control">
-                        <option value='Laki-Laki'>Laki-Laki</option>
-                        <option value ='Perempuan'>Perempuan</option>
-                        </Select>
+                         <input type="radio" name="Gender" value="Laki-Laki">Laki-Laki<br>
+                         <input type="radio" name="Gender" value="Perempuan">Perempuan<br>
                     </div>
                 </div>
                 <div class="form-group">
