@@ -14,10 +14,10 @@ class DataOrangController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function json()
-    {
-      return datatables()->of(DataOrang::all())->make(true);
-    }
+    // public function json()
+    // {
+    //   return datatables()->of(DataOrang::all())->make(true);
+    // }
 
     public function index()
     {
@@ -46,26 +46,24 @@ class DataOrangController extends Controller
             'Nama' => 'required',
             'Lahir' => 'required',
             'Alamat' => 'required',
+            'Photo' => 'required',
             ],
             [
                 'Nama.required'=>'Isi Data Terlebih Dahulu',
             ]
         );
         // Mengambil Semua Inputan Data Sebagai Array
-         $input = $request->all();
+         $Nama = $request->all();
          // Memberi Attribute NULL pada Photo
-         $input['Photo'] = null;
+         $Nama['Photo'] = null;
+         
 
          if ($request->hasFile('Photo')){
-            $input['Photo'] = '/upload/Photo/'.str_slug($input['Nama'], '-').'.'.$request->Photo->getClientOriginalExtension();
-            $request->Photo->move(public_path('/upload/Photo/'), $input['Photo']);
+            $Nama['Photo'] = '/upload/Photo/'.str_slug($Nama['Nama'], '-').'.'
+            .$request->Photo->getClientOriginalExtension();
+            $request->Photo->move(public_path('/upload/Photo/'), $Nama['Photo']);
         }
-
-        // if ($request->hasFile('Photo')){
-        //     $input['Photo'] = '/upload/Photo/'.str_slug($input['Name'], '-').DIRECTORY_SEPARATOR. 'img'.$request->Photo->getClientOriginalName();
-        //     $request->Photo->move(public_path('/upload/Photo/'), $input['Photo']);
-        // }
-        DataOrang::create($input);
+        DataOrang::create($Nama);
 
         return response()->json([
             'success' => true,
@@ -95,7 +93,7 @@ class DataOrangController extends Controller
     {
         $Nama = DataOrang::findOrFail($id);
         return $Nama;
-        return view('DataOrang.form-edit');
+        return view('DataOrang.form2');
          
     }
 
@@ -110,10 +108,10 @@ class DataOrangController extends Controller
     { 
         $input = $request->all();
         $Nama =DataOrang::findOrFail($id);
-         $input['Photo'] = $Nama->Photo;
+        $input['Photo'] = $Nama->Photo;
 
         if ($request->hasFile('Photo')){
-            if (!$Nama->Photo == NULL){
+            if (!$Nama->Photo == null){
                 unlink(public_path($Nama->Photo));
             }
            $input['Photo'] = '/upload/Photo/'.str_slug($input['Nama'], '-').'.'.$request->Photo->getClientOriginalExtension();
@@ -137,10 +135,11 @@ class DataOrangController extends Controller
     public function destroy($id)
     {
         $Nama = DataOrang::findOrFail($id);
-        if (!$Nama->photo == NULL){
-            unlink(public_path($Nama->photo));
-        }
-
+        if ($Nama->delete()) {
+        if (!$Nama->Photo == null){
+            unlink(public_path($Nama->Photo));
+        }   
+    }
         DataOrang::destroy($id);
 
         return response()->json([
@@ -157,7 +156,7 @@ class DataOrangController extends Controller
                 if ($Nama->Photo == NULL){
                     return 'No Image';
                 }
-                return '<img class="rounded-square" width="50" height="50" src="'. url($Nama->Photo) .'" alt="">';
+                return '<img class="rounded-square" width="50" height="50" src="'. url($Nama->Photo) .'?'.time().'" alt="">';
             })
             ->addColumn('action', function($Nama){
                 return '<a onclick="editForm('. $Nama->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .

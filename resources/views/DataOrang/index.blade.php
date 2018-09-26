@@ -32,24 +32,13 @@
 
 </head>
 <style>
-  /*.modal-header, h4, .close {
+  .modal-header, h4, .close {
       background-color: #5cb85c;
       color:white !important;
-      text-align: center;
-      font-size: 30px;
   }
   .modal-footer {
       background-color: #f9f9f9;
-  }
-   .modal-header2, h4, .close {
-      background-color: blue;
-      color:white !important;
-      text-align: center;
-      font-size: 30px;
-  }
-  .modal-footer {
-      background-color: #f9f9f9;
-  }*/
+
   </style>
 <body>
 
@@ -69,6 +58,7 @@
                 <th>Status</th>
                 <th>Gender</th>
                 <th>Alamat</th>
+                <th>Pekerjaan</th>
                 <th>Keterangan</th>
                 <th>Photo</th>
                 <th>Action</th>
@@ -107,12 +97,13 @@
                         {data: 'Status', name: 'Status'},
                         {data: 'Gender', name: 'Gender'},
                         {data: 'Alamat', name: 'Alamat'},
+                        {data: 'Pekerjaan', name: 'Pekerjaan'},
                         { "data": 0 , //mengambil id field
                           //mRender ???
                           "mRender" : function ( value, type, full ) {                    
                           //full adalah jumlah seluruh array 
                           //proses penggabungan
-                          return full['Nama']+', '+full['Lahir']+','+full['Status']+','+full['Gender']+','+full['Alamat'];}
+                          return 'Nama '+full['Nama']+',Lahir Pada Tanggal '+full['Lahir']+',Status '+full['Status']+',Berkelamin '+full['Gender']+',Tinggal Di '+full['Alamat']+',Bekerja Sebagai '+full['Pekerjaan'];}
                         },
                         {data: 'show_photo', name: 'show_photo'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
@@ -124,13 +115,18 @@
         // Karena Html Forms tidak support PUT,PATCH,DELETE maka _method dapat digunakan tentu saja _method dapat menampung POST
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
-        $('#form-contact')[0].reset();
+        $('#form')[0].reset();
         $('.modal-title').text('TambahDataOrang');
+         // $.ajax({
+         //  error: function(){
+
+         //  }
+         //   });
       }
           editForm = function (id) {
           save_method = 'edit';
           $('input[name=_method]').val('PATCH');
-          $('#form-contact')[0].reset();
+          $('#form')[0].reset();
           $.ajax({
             url: "{{ url('table') }}" + '/' + id + "/edit",
             // Method yang digunakan
@@ -144,8 +140,14 @@
               $('#Nama').val(data.Nama);
               $('#Lahir').val(data.Lahir);
               $('#Status').val(data.Status);
-              $('#Gender').val(data.Gender);
+              if (data.Gender == 'Laki-Laki') {
+                $('#9').prop('checked',true);
+              }
+              else{
+                $('#8').prop('checked',true);
+              }
               $('#Alamat').val(data.Alamat);
+              
             },
             error : function() {
                 alert("Tidak Ada Data");
@@ -155,13 +157,13 @@
         deleteData = function (id){
           var csrf_token = $('meta[name="csrf-token"]').attr('content');
           swal({
-              title:'Apakah Anda Yakin?',
-              text: "Anda Tidak Bisa Mengembalikan Data Yang Hilang!",
+              title:'Are You Sure?',
+              text: "You Can't Revert This Action!",
               type: 'warning',
               showCancelButton: true,
               cancelButtonColor: '#d33',
               confirmButtonColor: '#3085d6',
-              confirmButtonText: 'Oke,Hapus Saja!',
+              confirmButtonText: 'Yes,Delete It Please!',
           }).then(function () {
             swal({
                 title: 'Please Wait..!',
@@ -181,7 +183,7 @@
                       swal.hideLoading();
                       table.ajax.reload();
                       swal({
-                          title: 'Success!',
+                          title: 'Deleted!',
                           text: data.message,
                           type: 'success',  
                           allowOutsideClick: false,

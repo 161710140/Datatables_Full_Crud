@@ -1,11 +1,11 @@
 <div class="modal fade" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="form-contact" method="post" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
+            <form id="form" method="post" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
                 {{ csrf_field() }} {{ method_field('POST') }}
                 <div class="modal-header">
                     </button>
-                    <h3 class="modal-title"></h3>
+                    <h4 class="modal-title"></h4>
                 </div>
 
                 <div class="modal-body">
@@ -14,7 +14,7 @@
                         <label for="Nama" class="col-md-3 control-label"><span class="glyphicon glyphicon-user"></span>Name</label>
                         <div class="col-md-6">
                             <input type="text" id="Nama" name="Nama" class="form-control" required>
-                            <span class="help-block has-error Nama_error"></span>
+                            <span class="help-block with-errors"></span>
                         </div>
                     </div>
 
@@ -45,8 +45,18 @@
                  <div class="form-group ">
                         <label for="Gender" class="col-md-3 control-label"><span class="glyphicon glyphicon-user"></span>Gender</label>
                         <div class="col-md-6">
-                         <input type="radio" name="Gender" value="Laki-Laki">Laki-Laki<br>
-                         <input type="radio" name="Gender" value="Perempuan">Perempuan<br>
+                         <input id="9" type="radio" name="Gender" value="Laki-Laki" required>Laki-Laki<br>
+                         <input id="8" type="radio" name="Gender" value="Perempuan" required>Perempuan<br>
+                         <span class="help-block with-errors"></span>
+                    </div>
+                </div>
+                 <div class="form-group ">
+                        <label for="Pekerjaan" class="col-md-3 control-label"><span class="glyphicon glyphicon-user"></span>Pekerjaan</label>
+                        <div class="col-md-6">
+                         <input id="1" type="checkbox" name="Pekerjaan" value="Guru" >Guru<br>
+                         <input id="2" type="checkbox" name="Pekerjaan" value="Pelajar" >Pelajar<br>
+                         <input id="3" type="checkbox" name="Pekerjaan" value="Programmer" >Programmer<br>
+                         <input id="4" type="checkbox" name="Pekerjaan" value="Dokter" >Dokter<br>
                     </div>
                 </div>
                 <div class="form-group">

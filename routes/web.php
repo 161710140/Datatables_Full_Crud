@@ -19,8 +19,8 @@ Route::get('bs', function () {
 });
 Route::get('api/Data', 'DataOrangController@apiData')->name('api.Data');
 Route::resource('table', 'DataOrangController');
-Route::resource('contact', 'ContactController');
-Route::get('api/contact', 'ContactController@apiContact')->name('api.contact');
+// Route::resource('contact', 'ContactController');
+// Route::get('api/contact', 'ContactController@apiContact')->name('api.contact');
 Auth::routes();
 // Route::get('/user/json','DataOrangController@Action')->name('Action');
 // Route::post('auuuuu', 'DataOrangController@store')->name('store');
