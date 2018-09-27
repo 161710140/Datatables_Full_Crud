@@ -81,12 +81,17 @@
 
     {{-- Validator --}}
     <script src="{{ asset('assets/validator/validator.min.js') }}"></script>
-
+    <!-- Loading Overlay -->
+    <script src="{{ asset('js/loadingoverlay.min.js') }}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{ asset('assets/bootstrap/js/ie10-viewport-bug-workaround.js') }}"></script>
     <script type="text/javascript">
+      $.LoadingOverlay('show',{
+      image:"{{asset('a.gif')}}",
+      text:"Loading....",
+      textAnimation: "1500ms fadein"
+      });
   $(document).ready(function() {
-
     var table = $('#table').DataTable({
                       processing: true,
                       serverSide: true,
@@ -109,21 +114,44 @@
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
+          setTimeout(function(){
+          $.LoadingOverlay("hide");
+          }, 3000);
         addForm = function () {
+          $('input[name=_method]').val('POST');
+          $.LoadingOverlay('show',{
+          image:"{{asset('a.gif')}}",
+          });
+          setTimeout(function(){
+          $.LoadingOverlay("hide");
+          }, 500);
         save_method = "add";
         // Method Spoofing 
         // Karena Html Forms tidak support PUT,PATCH,DELETE maka _method dapat digunakan tentu saja _method dapat menampung POST
-        $('input[name=_method]').val('POST');
+         $.ajax({
+        success: function(){
         $('#modal-form').modal('show');
         $('#form')[0].reset();
         $('.modal-title').text('TambahDataOrang');
-         // $.ajax({
-         //  error: function(){
-
-         //  }
-         //   });
+          }
+           });
       }
+          Cancel = function(){
+              $.LoadingOverlay('show',{
+                  image:"{{asset('a.gif')}}",
+                  });
+                  setTimeout(function(){
+                  $.LoadingOverlay("hide");
+                  }, 500);
+          }
           editForm = function (id) {
+            $('input[name=_method]').val('POST');
+                  $.LoadingOverlay('show',{
+                  image:"{{asset('a.gif')}}",
+                  });
+                  setTimeout(function(){
+                  $.LoadingOverlay("hide");
+                  }, 500);
           save_method = 'edit';
           $('input[name=_method]').val('PATCH');
           $('#form')[0].reset();
@@ -156,6 +184,12 @@
         }
         deleteData = function (id){
           var csrf_token = $('meta[name="csrf-token"]').attr('content');
+          $.LoadingOverlay('show',{
+          image:"{{asset('a.gif')}}",
+          });
+          setTimeout(function(){
+          $.LoadingOverlay("hide");
+          }, 500);
           swal({
               title:'Are You Sure?',
               text: "You Can't Revert This Action!",
@@ -165,22 +199,17 @@
               confirmButtonColor: '#3085d6',
               confirmButtonText: 'Yes,Delete It Please!',
           }).then(function () {
-            swal({
-                title: 'Please Wait..!',
-                text : 'Working on it..',
-                allowOutsideClick: false,
-                allowEscapeKey   : false,
-                allowEnterKey    : false,
-                onOpen: () => {
-                    swal.showLoading()
-                }
-            })
+          $.LoadingOverlay('show',{
+          image:"{{asset('a.gif')}}",
+          });
               $.ajax({
                   url : "{{ url('table') }}" + '/' + id,
                   type : "POST",
                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                   success : function(data) {
-                      swal.hideLoading();
+                    setTimeout(function(){
+                    $.LoadingOverlay("hide");
+                    }, 500);
                       table.ajax.reload();
                       swal({
                           title: 'Deleted!',
@@ -192,8 +221,14 @@
                       })
                   },
                   error : function () {
+                     // $.LoadingOverlay('show',{
+                     // image:"{{asset('a.gif')}}",
+                     //  });
+                     // setTimeout(function(){
+                     // $.LoadingOverlay("hide");
+                     // }, 500);
                       swal({
-                        showLoaderOnConfirm:true, 
+                         showLoaderOnConfirm:true, 
                           title: 'Oops...',
                           text: data.message,
                           type: 'error',
@@ -211,16 +246,9 @@
                     var id = $('#id').val();
                     if (save_method == 'add') url = "{{ url('table') }}";
                     else url = "{{ url('table') . '/' }}" + id;
-                     swal({
-                    title: 'Please Wait..!',
-                    text : 'Working on it..',
-                    allowOutsideClick: false,
-                    allowEscapeKey   : false,
-                    allowEnterKey    : false,
-                    onOpen: () => {
-                    swal.showLoading()
-                  }
-                })
+                     $.LoadingOverlay('show',{
+                     image:"{{asset('a.gif')}}",
+                     });
                     $.ajax({
                         url : url,
                         type : "POST",
@@ -228,7 +256,9 @@
                         contentType: false,
                         processData: false,
                         success : function(data) {
-                          swal.hideLoading();
+                          setTimeout(function(){
+                          $.LoadingOverlay("hide");
+                          }, 500);
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
                             swal({
@@ -241,6 +271,9 @@
                             })
                         },
                         error : function(data){
+                          setTimeout(function(){
+                          $.LoadingOverlay("hide");
+                          }, 500);
                             swal({
                                 title: 'Oops...',
                                 text : data.message,

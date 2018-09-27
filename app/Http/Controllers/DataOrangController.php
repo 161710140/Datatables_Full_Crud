@@ -46,7 +46,6 @@ class DataOrangController extends Controller
             'Nama' => 'required',
             'Lahir' => 'required',
             'Alamat' => 'required',
-            'Photo' => 'required',
             ],
             [
                 'Nama.required'=>'Isi Data Terlebih Dahulu',
