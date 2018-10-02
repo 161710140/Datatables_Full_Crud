@@ -1,3 +1,7 @@
+<!-- Select2 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
+
 <div class="modal fade" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -25,7 +29,7 @@
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id ='summernote'>
                       <label for="Alamat" class="col-md-3 control-label"><span class="glyphicon glyphicon-road"></span> Alamat</label>
                       <div class="col-md-6">
                         <textarea id="Alamat" name="Alamat" class="form-control" required></textarea>
@@ -35,7 +39,7 @@
                     <div class="form-group ">
                         <label for="Status" class="col-md-3 control-label"><span class="glyphicon glyphicon-user"></span>Status</label>
                         <div class="col-md-6">
-                        <Select id='Status' name="Status" class="form-control">
+                        <Select name="Status" class="form-control select-single">
                         <option value='Single'>Single</option>
                         <option value ='Pacaran'>Pacaran</option>
                         <option value ='Menikah'>Menikah</option>
@@ -51,7 +55,7 @@
                     </div>
                 </div>
                  <div class="form-group ">
-                        <label for="Pekerjaan" class="col-md-3 control-label"><span class="glyphicon glyphicon-user"></span>Pekerjaan</label>
+                        <label for="Pekerjaan" class="col-md-3 control-label "><span class="glyphicon glyphicon-user"></span>Pekerjaan</label>
                         <div class="col-md-6">
                          <input id="1" type="checkbox" name="Pekerjaan" value="Guru" >Guru<br>
                          <input id="2" type="checkbox" name="Pekerjaan" value="Pelajar" >Pelajar<br>
@@ -75,3 +79,4 @@
         </div>
     </div>
 </div>
+

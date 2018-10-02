@@ -20,6 +20,8 @@
       <script src="{{ asset('assets/sweetalert2/sweetalert2.min.js') }}"></script>
       <link href="{{ asset('assets/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
 
+    <!-- SummerNote -->
+    <link href="summernote/dist/summernote.css" rel="stylesheet">
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="{{ asset('assets/bootstrap/css/ie10-viewport-bug-workaround.css') }}" rel="stylesheet">
 
@@ -66,10 +68,9 @@
         </thead>
     </table>
 </div>
+<button style="margin-left: 50px" type="button" class="btn btn-primary pull-left"><a href="{{ route('pdf') }}"><font color="white">Export PDF</font></a></button>
 <!-- Modal Add -->
 @include('DataOrang.form2')
-<!-- Modal Edit -->
-@include('DataOrang.form-edit')
 <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -85,6 +86,10 @@
     <script src="{{ asset('js/loadingoverlay.min.js') }}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{ asset('assets/bootstrap/js/ie10-viewport-bug-workaround.js') }}"></script>
+    <!-- SummerNote -->
+    <script src="summernote/dist/summernote.js"></script>
+     <!-- Select2 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript">
       $.LoadingOverlay('show',{
       image:"{{asset('a.gif')}}",
@@ -126,13 +131,15 @@
           $.LoadingOverlay("hide");
           }, 500);
         save_method = "add";
-        // Method Spoofing 
-        // Karena Html Forms tidak support PUT,PATCH,DELETE maka _method dapat digunakan tentu saja _method dapat menampung POST
+          // Method Spoofing 
+          // Karena Html Forms tidak support PUT,PATCH,DELETE maka _method dapat digunakan tentu saja _method dapat menampung POST
          $.ajax({
         success: function(){
         $('#modal-form').modal('show');
         $('#form')[0].reset();
         $('.modal-title').text('TambahDataOrang');
+        $('#Alamat').summernote('reset');
+        $('.select-single').select2();
           }
            });
       }
@@ -165,18 +172,18 @@
               $('#modal-form').modal('show');
               $('.modal-title').text('FormEditData');
               $('#id').val(data.id);
+              $('.select-single').select2();
               $('#Nama').val(data.Nama);
               $('#Lahir').val(data.Lahir);
               $('#Status').val(data.Status);
+              $('#Alamat').val(data.Alamat).summernote();
               if (data.Gender == 'Laki-Laki') {
                 $('#9').prop('checked',true);
               }
               else{
                 $('#8').prop('checked',true);
               }
-              $('#Alamat').val(data.Alamat);
-              
-            },
+           },
             error : function() {
                 alert("Tidak Ada Data");
             }
@@ -184,7 +191,7 @@
         }
         deleteData = function (id){
           var csrf_token = $('meta[name="csrf-token"]').attr('content');
-          $.LoadingOverlay('show',{
+          $.LoadingOverlay('show', {
           image:"{{asset('a.gif')}}",
           });
           setTimeout(function(){
@@ -300,6 +307,5 @@
             } 
             today = yyyy+'-'+mm+'-'+dd;
             document.getElementById("Lahir").setAttribute("max", today);
-
      });
 </script>

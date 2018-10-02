@@ -6,6 +6,7 @@ use App\DataOrang;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Html\Builder;
 use Yajra\DataTables\Datatables;
+use PDF;
 class DataOrangController extends Controller
 {
     /**
@@ -116,7 +117,6 @@ class DataOrangController extends Controller
            $input['Photo'] = '/upload/Photo/'.str_slug($input['Nama'], '-').'.'.$request->Photo->getClientOriginalExtension();
             $request->Photo->move(public_path('/upload/Photo/'), $input['Photo']);
         }
-
         $Nama->update($input);
 
         return response()->json([
@@ -161,7 +161,14 @@ class DataOrangController extends Controller
                 return '<a onclick="editForm('. $Nama->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
                        '<a onclick="deleteData('. $Nama->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })
-            ->rawColumns(['action','show_photo'])->make(true);
+            ->rawColumns(['action','show_photo','Alamat'])->make(true);
+    }
+    public function exportdata()
+    {
+        $Nama = DataOrang::limit(20)->get();
+        $pdf = PDF::loadView('DataOrang.pdf', compact('Nama'));
+        $pdf->setPaper('a4', 'potrait');
+        return $pdf->stream();
     }
 
 }

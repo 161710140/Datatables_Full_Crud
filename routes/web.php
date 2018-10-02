@@ -19,6 +19,7 @@ Route::get('bs', function () {
 });
 Route::get('api/Data', 'DataOrangController@apiData')->name('api.Data');
 Route::resource('table', 'DataOrangController');
+Route::get('/pdf','DataOrangController@exportdata')->name('pdf');
 // Route::resource('contact', 'ContactController');
 // Route::get('api/contact', 'ContactController@apiContact')->name('api.contact');
 Auth::routes();
